@@ -1,17 +1,12 @@
 import streamlit as st
-import os
-from dotenv import load_dotenv
-
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage, HumanMessage
-from langchain.prompts import ChatPromptTemplate
 
-# --- 環境変数の読み込み ---
-load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+# --- OpenAI APIキーは Streamlit Cloud の secrets.toml に設定する ---
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 
 # --- LLM設定（LangChain）---
-llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model="gpt-3.5-turbo", temperature=0)
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
 
 # --- 専門家のプロンプト定義 ---
 expert_prompts = {
@@ -27,16 +22,16 @@ def generate_response(expert_type, user_input):
     response = llm([system_message, human_message])
     return response.content
 
-# --- Streamlit UI ---https://github.com/Gen-0511/streamlit-llm-app.git
+# --- Streamlit UI ---
 st.set_page_config(page_title="専門家に聞いてみよう！", layout="centered")
 
 st.title("🧠 専門家AIチャット")
 st.markdown("以下のフォームに質問を入力し、相談したい専門家を選んでください。LLMがその専門家になりきってお答えします。")
 
-# --- ラジオボタンで専門家選択 ---
+# --- 専門家選択 ---
 expert_type = st.radio("相談する専門家を選択してください：", list(expert_prompts.keys()))
 
-# --- テキスト入力フォーム ---
+# --- 質問入力 ---
 user_input = st.text_area("質問を入力してください", height=150)
 
 # --- 応答表示 ---
