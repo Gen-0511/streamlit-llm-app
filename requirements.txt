@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 streamlit==1.35.0
 openai>=1.0.0
 python-dotenv
 langchain
 langchain-community
+=======
+streamlit
+openai
+langchain
+langchain-community
+python-dotenv
+>>>>>>> a990bf3be510d7fd341b76bc57b699e33d1f069b
